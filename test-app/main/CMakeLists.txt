@@ -25,7 +25,7 @@ idf_component_register(
         "main.swift"
         "TestLEDC.swift"
     INCLUDE_DIRS "."
-    REQUIRES esp-swift-ledc esp-swift-gpio esp-swift-platform esp-swift-support
+    REQUIRES esp-swift-ledc esp-swift-gpio
 )
 
 swift_configure(
