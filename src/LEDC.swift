@@ -90,13 +90,13 @@ public struct LedcTimer: ~Copyable {
     ///   - outputInvert: Invert the output signal (default: `false`).
     ///
     /// - Returns: A `Channel` to control duty.
-    /// - Throws: `Error` if channel configuration fails.
+    /// - Throws: `PlatformError` if channel configuration fails.
     public func addChannel(
         channel: ledc_channel_t,
         gpioNum: gpio_num_t,
         duty: Float = 0.0,
         outputInvert: Bool = false
-    ) throws(Error) -> Channel {
+    ) throws(PlatformError) -> Channel {
         let maxDuty = UInt32(1) << UInt32(resolution.rawValue)
         let rawDuty = UInt32(duty.clamped(to: 0.0...1.0) * Float(maxDuty))
         var cfg = ledc_channel_config_t(
@@ -118,8 +118,8 @@ public struct LedcTimer: ~Copyable {
 
     /// Set the PWM frequency. All channels sharing this timer are affected.
     ///
-    /// - Throws: `Error` on failure.
-    public func setFreq(_ freqHz: UInt32) throws(Error) {
+    /// - Throws: `PlatformError` on failure.
+    public func setFreq(_ freqHz: UInt32) throws(PlatformError) {
         try ledc_set_freq(LEDC_LOW_SPEED_MODE, timerNum, freqHz)
             .throwEspError {
                 log.e("Failed to set LEDC frequency: \($0.name)")
@@ -133,8 +133,8 @@ public struct LedcTimer: ~Copyable {
 
     /// Pause the timer. All channels using it stop toggling.
     ///
-    /// - Throws: `Error` on failure.
-    public func pause() throws(Error) {
+    /// - Throws: `PlatformError` on failure.
+    public func pause() throws(PlatformError) {
         try ledc_timer_pause(LEDC_LOW_SPEED_MODE, timerNum)
             .throwEspError {
                 log.e("Failed to pause LEDC timer: \($0.name)")
@@ -143,8 +143,8 @@ public struct LedcTimer: ~Copyable {
 
     /// Resume a paused timer.
     ///
-    /// - Throws: `Error` on failure.
-    public func resume() throws(Error) {
+    /// - Throws: `PlatformError` on failure.
+    public func resume() throws(PlatformError) {
         try ledc_timer_resume(LEDC_LOW_SPEED_MODE, timerNum)
             .throwEspError {
                 log.e("Failed to resume LEDC timer: \($0.name)")
@@ -153,8 +153,8 @@ public struct LedcTimer: ~Copyable {
 
     /// Reset the timer counter to zero.
     ///
-    /// - Throws: `Error` on failure.
-    public func reset() throws(Error) {
+    /// - Throws: `PlatformError` on failure.
+    public func reset() throws(PlatformError) {
         try ledc_timer_rst(LEDC_LOW_SPEED_MODE, timerNum)
             .throwEspError {
                 log.e("Failed to reset LEDC timer: \($0.name)")
@@ -182,8 +182,8 @@ public struct LedcTimer: ~Copyable {
         /// Calls `ledc_set_duty` + `ledc_update_duty` — both are required for
         /// the new value to take effect.
         ///
-        /// - Throws: `Error` on failure.
-        public func setDuty(_ duty: Float) throws(Error) {
+        /// - Throws: `PlatformError` on failure.
+        public func setDuty(_ duty: Float) throws(PlatformError) {
             let maxDuty = UInt32(1) << UInt32(resolution.rawValue)
             try setDutyRaw(UInt32(duty.clamped(to: 0.0...1.0) * Float(maxDuty)))
         }
@@ -193,8 +193,8 @@ public struct LedcTimer: ~Copyable {
         /// Calls `ledc_set_duty` + `ledc_update_duty` — both are required for
         /// the new value to take effect.
         ///
-        /// - Throws: `Error` on failure.
-        public func setDutyRaw(_ duty: UInt32) throws(Error) {
+        /// - Throws: `PlatformError` on failure.
+        public func setDutyRaw(_ duty: UInt32) throws(PlatformError) {
             try ledc_set_duty(LEDC_LOW_SPEED_MODE, channel, duty)
                 .throwEspError {
                     log.e("Failed to set LEDC duty: \($0.name)")
@@ -220,8 +220,8 @@ public struct LedcTimer: ~Copyable {
         /// Stop the channel output and drive the pin to `idleLevel`.
         ///
         /// - Parameter idleLevel: Pin level after stop: 0 (low) or 1 (high).
-        /// - Throws: `Error` on failure.
-        public func stop(idleLevel: UInt32 = 0) throws(Error) {
+        /// - Throws: `PlatformError` on failure.
+        public func stop(idleLevel: UInt32 = 0) throws(PlatformError) {
             try ledc_stop(LEDC_LOW_SPEED_MODE, channel, idleLevel)
                 .throwEspError {
                     log.e("Failed to stop LEDC channel: \($0.name)")
