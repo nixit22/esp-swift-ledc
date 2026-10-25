@@ -8,9 +8,9 @@ Depends on: `SwiftPlatform`, `SwiftSupport`, `esp_driver_ledc`
 
 | File | Role |
 |---|---|
-| `src/LEDC.swift` | `LedcTimer` and `LedcTimer.Channel` — public Swift API |
-| `src/ledc.c` / `src/ledc.h` | Thin C wrapper — only `#include <driver/ledc.h>` |
-| `module.modulemap` | Clang module `ESP_LEDC` — umbrella over `src/ledc.h` |
+| `Sources/LEDC/LEDC.swift` | `LedcTimer` and `LedcTimer.Channel` — public Swift API |
+| `Sources/ESP_LEDC/ledc.c` / `Sources/ESP_LEDC/include/ESP_LEDC.h` | Thin C wrapper — only `#include <driver/ledc.h>` |
+| `Package.swift` | SwiftPM package: C target `ESP_LEDC` (module map generated from `include/ESP_LEDC.h`, the former `ESP_LEDC.h`) and Swift target `LEDC` |
 
 ## Public API
 

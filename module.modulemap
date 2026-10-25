@@ -1,4 +1,0 @@
-module ESP_LEDC [system] {
-    umbrella header "src/ledc.h"
-    export *
-}

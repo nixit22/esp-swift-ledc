@@ -20,4 +20,4 @@
  * SOFTWARE.
  */
 
-#include "ledc.h"
+#include "ESP_LEDC.h"
