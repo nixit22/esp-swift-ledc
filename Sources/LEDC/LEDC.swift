@@ -108,7 +108,8 @@ public struct LedcTimer: ~Copyable {
             duty: rawDuty,
             hpoint: 0,
             sleep_mode: LEDC_SLEEP_MODE_NO_ALIVE_NO_PD,
-            flags: .init(output_invert: outputInvert ? 1 : 0))
+            flags: .init(output_invert: outputInvert ? 1 : 0),
+            deconfigure: false)
         try ledc_channel_config(&cfg)
             .throwEspError {
                 log.e("Failed to configure LEDC channel: \($0.name)")
